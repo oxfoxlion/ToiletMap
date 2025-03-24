@@ -1,11 +1,47 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import "leaflet/dist/leaflet.css";
+import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [toilets, setToilets] = useState([]);//儲存公共廁所資料
+
+  useEffect(() => {
+    // 執行取得公共廁所資料
+    getToilet()
+  }, [])
+
+  // 打公共廁所API
+  const getToilet = async () => {
+    try {
+      const response = await axios.get('https://data.moenv.gov.tw/api/v2/fac_p_07?api_key=9e565f9a-84dd-4e79-9097-d403cae1ea75&limit=1000&sort=ImportDate%20desc&format=JSON')
+      setToilets(response.data.records);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
-      <h1 className='text-primary'>Vite + React</h1>
+      <div className='container'>
+        <h1>廁所地圖</h1>
+        <MapContainer center={[25.03755867226239, 121.51723448899627]} zoom={13} scrollWheelZoom={true} style={{ height: "500px", width: "100%" }}>
+          <TileLayer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+            attribution="Positron">
+          </TileLayer>
+
+          {toilets.length > 1 && toilets.map((item) => (
+            <Marker position={[item.latitude, item.longitude]} key={item.number}>
+
+              <Popup>
+                {item.name}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
     </>
   )
 }
