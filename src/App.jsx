@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import axios from 'axios';
+import mapMark from './assets/toilet-bowl.png'
 
 function App() {
 
@@ -23,6 +24,18 @@ function App() {
     }
   }
 
+  const createCustomIcon = () => {
+    return L.divIcon({
+      className: "custom-marker",
+      html: `<div style="text-align: center;width:max-content">
+                <img src=${mapMark} style='margin:0 auto' />
+             </div>`,
+      iconSize: [40, 41], // 調整圖標大小
+      iconAnchor: [20, 41], // 調整圖標的錨點
+      popupAnchor: [0, -41], // 調整彈出視窗位置
+    });
+  };
+
   return (
     <>
       <div className='container'>
@@ -33,7 +46,7 @@ function App() {
           </TileLayer>
 
           {toilets.length > 1 && toilets.map((item) => (
-            <Marker position={[item.latitude, item.longitude]} key={item.number}>
+            <Marker position={[item.latitude, item.longitude]} key={item.number} icon={createCustomIcon()}>
 
               <Popup>
                 {item.name}
