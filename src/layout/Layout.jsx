@@ -6,7 +6,7 @@ export default function Layout() {
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container">
-                    <Link className="navbar-brand" path="/">廁所地圖</Link>
+                    <Link className="navbar-brand" path="/">Finding</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
